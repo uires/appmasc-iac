@@ -18,6 +18,6 @@ resource "aws_instance" "app_server" {
   instance_type = "t2.micro"
   key_name      = "default-california"
   tags = {
-    Name = "AppMasc"
+    Name = "AppMasc_v0_1"
   }
 }
