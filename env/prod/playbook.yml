@@ -1,0 +1,26 @@
+- hosts: terraform-ansible
+  tasks: 
+  - name: install python3 and virtualenv
+    apt: 
+      pkg: 
+      - python3
+      - virtualenv
+      update_cache: yes
+    become: yes
+  - name: git clone source project
+    ansible.builtin.git:
+      repo: https://github.com/uires/clientes-api.git
+      dest: /home/ubuntu/app/
+      version: master
+  - name: install django and django rest
+    pip: 
+      virtualenv: /home/ubuntu/app/venv
+      name: 
+      - django
+      - djangorestframework
+  - name: changing default settings hosts
+    lineinfile: 
+      path: /home/ubuntu/app/setup/settings.py
+      regexp: 'ALLOWED_HOSTS'
+      line: 'ALLOWED_HOSTS = ["*"]'
+      backrefs: yes

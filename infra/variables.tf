@@ -9,3 +9,7 @@ variable "key" {
 variable "instance" {
   type = string
 }
+
+variable "env-alias" {
+  type = string
+}
