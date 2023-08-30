@@ -14,10 +14,10 @@ provider "aws" {
 }
 
 resource "aws_instance" "app_server" {
-  ami             = "ami-0f8e81a3da6e2510a"
-  instance_type   = var.instance
-  security_groups = ["general-access"]
-  key_name        = var.key
+  ami                    = "ami-0f8e81a3da6e2510a"
+  instance_type          = var.instance
+  vpc_security_group_ids = [aws_security_group.general-access.id]
+  key_name               = var.key
   tags = {
     Name = "AppMasc_v0_1"
   }
