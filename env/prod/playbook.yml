@@ -12,12 +12,11 @@
       repo: https://github.com/uires/clientes-api.git
       dest: /home/ubuntu/app/
       version: master
+      force: yes
   - name: install django and django rest
     pip: 
       virtualenv: /home/ubuntu/app/venv
-      name: 
-      - django
-      - djangorestframework
+      requirements: /home/ubuntu/app/requirements.txt
   - name: changing default settings hosts
     lineinfile: 
       path: /home/ubuntu/app/setup/settings.py
