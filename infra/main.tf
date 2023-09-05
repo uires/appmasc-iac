@@ -19,7 +19,7 @@ resource "aws_instance" "app_server" {
   security_groups = [aws_security_group.general-access.name]
   key_name        = var.key
   tags = {
-    Name = "AppMasc_v0_1"
+    Name = "AppMasc_v0_1-${var.env-alias}"
   }
 }
 
