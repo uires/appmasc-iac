@@ -13,14 +13,15 @@ provider "aws" {
   region = var.region_aws
 }
 
-resource "aws_instance" "app_server" {
-  ami             = "ami-0f8e81a3da6e2510a"
-  instance_type   = var.instance
-  security_groups = [aws_security_group.general-access.name]
-  key_name        = var.key
+resource "aws_launch_template" "machine" {
+  image_id             = "ami-0f8e81a3da6e2510a"
+  instance_type        = var.instance
+  key_name             = var.key
+  security_group_names = [var.security_group]
   tags = {
     Name = "AppMasc_v0_1-${var.env-alias}"
   }
+  user_data = filebase64("ansible.sh")
 }
 
 resource "aws_key_pair" "sshKey" {
@@ -28,6 +29,14 @@ resource "aws_key_pair" "sshKey" {
   public_key = file("${var.key}.pub")
 }
 
-output "public_ip" {
-  value = aws_instance.app_server.public_ip
+resource "aws_autoscaling_group" "autoscaling_group" {
+  availability_zones = ["${var.region_aws}b"]
+  name               = var.autoscaling_group_name
+  max_size           = var.autoscaling_group_max_size
+  min_size           = var.autoscaling_group_min_size
+  launch_template {
+    id      = aws_launch_template.machine.id
+    version = "$Latest"
+  }
+
 }

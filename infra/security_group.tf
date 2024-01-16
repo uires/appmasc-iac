@@ -1,6 +1,5 @@
 resource "aws_security_group" "general-access" {
-  name        = "general-access-${var.env-alias}"
-  description = "Allow general access for dev and prod envroment"
+  name = var.security_group
   ingress {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
