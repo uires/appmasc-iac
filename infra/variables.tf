@@ -29,3 +29,7 @@ variable "autoscaling_group_max_size" {
 variable "autoscaling_group_min_size" {
   type = number
 }
+
+variable "production" {
+  type = bool
+}

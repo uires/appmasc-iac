@@ -8,4 +8,5 @@ module "aws-prod" {
   autoscaling_group_max_size = 10
   autoscaling_group_min_size = 1
   autoscaling_group_name     = "production"
+  production                 = true
 }

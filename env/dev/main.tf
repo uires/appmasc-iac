@@ -8,5 +8,6 @@ module "aws-dev" {
   autoscaling_group_max_size = 1
   autoscaling_group_min_size = 0
   autoscaling_group_name = "development"
+  production                 = false
 }
 
