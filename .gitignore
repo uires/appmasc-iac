@@ -44,3 +44,6 @@ terraform.rc
 **.pub
 
 *default-key*
+
+# python context
+__pycache__

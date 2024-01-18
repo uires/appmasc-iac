@@ -34,7 +34,7 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   name               = var.autoscaling_group_name
   max_size           = var.autoscaling_group_max_size
   min_size           = var.autoscaling_group_min_size
-  target_group_arns  = [aws_lb.load_balancer.arn]
+  target_group_arns  = [aws_lb_target_group.target_load_balancer.arn]
   launch_template {
     id      = aws_launch_template.machine.id
     version = "$Latest"
@@ -50,8 +50,9 @@ resource "aws_default_subnet" "subnet_2" {
 }
 
 resource "aws_lb" "load_balancer" {
-  internal = false
-  subnets  = [aws_default_subnet.subnet_1.id, aws_default_subnet.subnet_2.id]
+  internal        = false
+  subnets         = [aws_default_subnet.subnet_1.id, aws_default_subnet.subnet_2.id]
+  security_groups = [aws_security_group.general-access.id]
 }
 
 resource "aws_lb_target_group" "target_load_balancer" {
@@ -70,5 +71,17 @@ resource "aws_lb_listener" "load_balancer_entry_point" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.target_load_balancer.arn
+  }
+}
+
+resource "aws_autoscaling_policy" "autoscaling_policy" {
+  name = "default_scaling"
+  autoscaling_group_name = var.autoscaling_group_name
+  policy_type = "TargetTrackingScaling"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 50.0
   }
 }
